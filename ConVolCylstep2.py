@@ -39,5 +39,5 @@ vol = round(vol,2)
 
 #needs to tell vol and input info
 print("\nif a cylinder has the radius of " + str(intradius) + "cm, \n\tand a height of " + str(intheight) + "cm")
-print("\nit has a volume of " + str(vol) + " cm\u00b2")
-print("\nequation used: \u03C0 \u00d7 radius\u00b2 \u00d7 height")
+print("\nit has a volume of " + str(vol) + " cm\u00b3")
+print("\nequation used: volume = \u03C0 \u00d7 radius\u00b2 \u00d7 height")
