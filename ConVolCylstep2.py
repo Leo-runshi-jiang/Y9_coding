@@ -7,11 +7,11 @@ print("enter in values for cylinder volume calculation")
 # need radius and height
 
 #radius
-radius = input("radius in cm ")
+radius = input("\nradius in cm ")
 intradius = int(radius)
 
 #height
-height = input("height in cm ")
+height = input("\nheight in cm ")
 intheight = int(height)
 
 #process
@@ -38,5 +38,6 @@ vol = round(vol,2)
 #what is important about the output?
 
 #needs to tell vol and input info
-print("if a cylinder has the radius of " + str(intradius) + "cm, and a height of " + str(intheight) + "cm")
-print("it has a volume of " + str(vol) + " cm^3")
+print("\nif a cylinder has the radius of " + str(intradius) + "cm, \n\tand a height of " + str(intheight) + "cm")
+print("\nit has a volume of " + str(vol) + " cm\u00b2")
+print("\nequation used: \u03C0 \u00d7 radius\u00b2 \u00d7 height")
