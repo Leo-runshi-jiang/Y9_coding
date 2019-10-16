@@ -30,10 +30,10 @@ def runMe(*args):
 	output.insert(tk.END, result)
 	output.config(state = "disabled")
 	print(result)
-	
+
 def checkSelect():
 	print(var.get())
-	
+
 #main Program
 root = tk.Tk()
 
@@ -68,6 +68,7 @@ btnrun.config(fg="blue", command = runMe) #binds command of run me
 btnrun.pack(fill = tk.BOTH)
 
 var = tk.IntVar()
+
 
 check = tk.Checkbutton(root, text = "High Contrast", variable = var, command = checkSelect)
 check.config(anchor = tk.W)
