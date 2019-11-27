@@ -4,7 +4,7 @@ primeclr = '#F9D8D7'
 secondaryclr = '#FFFFFF'
 rootbgclr = '#EFEFEF'
 borderclr = '#999999'
-
+searchitems = []
 #When you load your program you are going to have to load all your formulas from file. 
 
 
@@ -17,18 +17,15 @@ borderclr = '#999999'
 def processValues(a,b,c,d,e):
 	print("Processing possible formulas")
 
+def takeVars(*arg):
+	var1 = "-1"
+	var2 = "-1"
+	var3 = "-1"
+	var4 = "-1"
+	var5 = "-1"
 
-
-def searchFNC(*args):
-	print("BUTTON PRESSED")
-
-	#Question: What are the conditions around what is in the entry
-
-	
-	#step 1: 
-	#I assume all values are invalid
-	check = [False,False,False,False,False]
-
+	#searchitems = [var1,var2,var3,var4,var5]
+	searchitems = []
 	#Step 2: Get all the values
 	v1 = entry1.get()
 	v2 = entry2.get()
@@ -36,55 +33,41 @@ def searchFNC(*args):
 	v4 = entry4.get()
 	v5 = entry5.get()
 
-	#Step 3: try to cast to an int and if that fails we know it is valid
-	try:
-		v1 = int(v1) #If this is an in!!!
-		
-	except:
-		print("It is a letter")
-		check[0] = True
-
-
-	try:
-		v2 = int(v2) #If this is an in!!!
-		
-	except:
-		print("It is a letter")
-		check[1] = True
-
-	try:
-		v3 = int(v3) #If this is an in!!!
-		
-	except:
-		print("It is a letter")
-		check[2] = True
-
-	try:
-		v4 = int(v4) #If this is an in!!!
-		
-	except:
-		print("It is a letter")
-		check[3] = True
-
-	try:
-		v5 = int(v5) #If this is an in!!!
-		
-	except:
-		print("It is a letter")
-		check[4] = True
-
-
-	runprocess = True
-
-	for i in range(0,len(check),1):
-		if (check[i] == False):
-			runprocess = False
-
-	if runprocess == True:
-		processValues(v1,v2,v3,v4,v5)
+	#Step 3: append to list
 	
+	if v1 != '':
+		searchitems.append(v1)
+	if v2 != '':
+		searchitems.append(v2)
+	if v3 != '':
+		searchitems.append(v3)
+	if v4 != '':
+		searchitems.append(v4)
+	if v5 != '':
+		searchitems.append(v5)
+	'''
+	if v1 != '':
+		var1 = v1
+	if v2 != '':
+		var2 = v2
+	if v3 != '':
+		var3 = v3
+	if v4 != '':
+		var4 = v4
+	if v5 != '':
+		var5= v5
+	'''
+
+	return(searchitems)
 
 
+def searchFNC(*args):
+	print("Searching")
+	vars = takeVars()
+	print(vars)
+	numvars = len(vars)
+	result = []
+	
 
 
 root = tk.Tk()
@@ -100,7 +83,7 @@ searchbtn.config(width = 15, height = 2)
 searchbtn.place(x=20,y=25)
 
 optionlist = [
-"all"
+"all",
 "math",
 "algebric equations", 
 "geometry and trig", 
