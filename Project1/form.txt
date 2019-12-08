@@ -3,7 +3,7 @@ kinematics,2,vi,vf,t,x
 kinematics,3,vi,t,a,x
 kinematics,4,vf,t,a,x
 kinematics,5,vf,vi,a,t
-geometry,1,a,b,c
-trig,1,θ,o,h
-trig,2,θ,a,h
-trig,3,θ,o,a
+geometry,6,a,b,c
+trig,7,θ,o,h
+trig,8,θ,a,h
+trig,9,θ,o,a
