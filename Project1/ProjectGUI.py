@@ -21,20 +21,43 @@ def on_closing():
 	if messagebox.askokcancel("quit", "Do you want to quit?"):
 
 		root.destroy()
-def outputimg(o):
-	if o == 1:
-		canvas = tk.Canvas(resultsframe, width = 300, height = 50)
-		canvas.pack()
-		img = tk.PhotoImage(file="quack men square.png")      
-		canvas.create_image(20,20, image=img) 
-		
-	'''
-	img = 'equation' + o
-	canvas.create_image(20,20, anchor=NW, image=img)
-	equation1 = tk.PhotoImage(file = "vf=vi+at.png")
-	'''
 
-	
+def searchFNC(*args):
+	print("Searching")
+	vars = takeVars()
+	print(vars)
+	entry1.delete(0,tk.END) 
+	entry2.delete(0,tk.END)
+	entry3.delete(0,tk.END)
+	entry4.delete(0,tk.END)
+	entry5.delete(0,tk.END)
+	processValues(vars[0],vars[1], vars[2], vars[3], vars[4])
+
+def takeVars(*arg):
+	var1 = "-1"
+	var2 = "-1"
+	var3 = "-1"
+	var4 = "-1"
+	var5 = "-1"
+
+	#searchitems = [var1,var2,var3,var4,var5]
+	searchitems = []
+	#Step 2: Get all the values
+	v1 = entry1.get()
+	v2 = entry2.get()
+	v3 = entry3.get()
+	v4 = entry4.get()
+	v5 = entry5.get()
+
+	#Step 3: append to list
+	searchitems.append(v1)
+	searchitems.append(v2)
+	searchitems.append(v3)
+	searchitems.append(v4)
+	searchitems.append(v5)
+
+	return(searchitems)
+
 
 def processValues(a,b,c,d,e):
 	print("Processing possible formulas with " + a + ''+ b + "" + c + ""+ d +""+ e)
@@ -102,56 +125,44 @@ def processValues(a,b,c,d,e):
 			line7pnt= line7pnt+1
 		
 		#the line with the highest points gets chosen
-		if line1pnt > line2pnt or line1pnt > line6pnt or line1pnt > line7pnt:
+		if line1pnt > line2pnt and line1pnt > line6pnt and line1pnt > line7pnt:
 			outputimg(1)
 			print("eq1")
 
-		if line2pnt > line1pnt or line2pnt > line6pnt or line2pnt > line7pnt:
+		if line2pnt > line1pnt and line2pnt > line6pnt and line2pnt > line7pnt:
 			outputimg(2)
 			print("eq2")
 
-		if line6pnt > line1pnt or line6pnt > line2pnt or line6pnt > line7pnt:
+		if line6pnt > line1pnt and line6pnt > line2pnt and line6pnt > line7pnt:
 			outputimg(6)
 			print("eq6")
 
-		if line7pnt > line1pnt or line7pnt > line2pnt or line7pnt > line6pnt:
+		if line7pnt > line1pnt and line7pnt > line2pnt and line7pnt > line6pnt:
 			outputimg(7)
 			print("eq7")
+		if line1pnt == 0 and line2pnt == 0 and line6pnt == 0 and line7pnt == 0:
+			outputimg(-1)
+			print("equation not found")
+
+#the function which outputs
+def outputimg(o):
+	
+	if o == 1:
+		result = "Vf = Vi + at"
+	if o == 2:
+		result = "X = 1/2(Vf + Vi)t"
+	if o == 6:
+		result = "a" + '\u00B2'+ "+" + "b" + '\u00B2' + "=" + "c" + '\u00B2'
+	if o == 7:
+		result = "SinA = O/H"
+	if o == -1:
+		result = "Error, equation not found"
+	output.config(state = "normal")
+	output.delete("1.0",tk.END) #delete everything
+	output.insert(tk.END,result)
+	output.config(state = "disabled")
 
 
-
-
-def takeVars(*arg):
-	var1 = "-1"
-	var2 = "-1"
-	var3 = "-1"
-	var4 = "-1"
-	var5 = "-1"
-
-	#searchitems = [var1,var2,var3,var4,var5]
-	searchitems = []
-	#Step 2: Get all the values
-	v1 = entry1.get()
-	v2 = entry2.get()
-	v3 = entry3.get()
-	v4 = entry4.get()
-	v5 = entry5.get()
-
-	#Step 3: append to list
-	searchitems.append(v1)
-	searchitems.append(v2)
-	searchitems.append(v3)
-	searchitems.append(v4)
-	searchitems.append(v5)
-
-	return(searchitems)
-
-
-def searchFNC(*args):
-	print("Searching")
-	vars = takeVars()
-	print(vars)
-	processValues(vars[0],vars[1], vars[2], vars[3], vars[4])
 
 
 #GUI
@@ -166,7 +177,7 @@ toolbar.place(x=0, y=0)
 
 searchbtn = tk.Button(root, text = "SEARCH", command = searchFNC)
 searchbtn.config(width = 15, height = 2)
-searchbtn.place(x=20,y=25)
+searchbtn.place(x=10,y=25)
 
 optionlist = [
 "all",
@@ -185,7 +196,7 @@ variable.set(optionlist[0])
 
 searchdropdwn = tk.OptionMenu(root, variable, *optionlist)
 searchdropdwn.config(width = 14, height = 2, bg = rootbgclr)
-searchdropdwn.place(x=170, y=25)
+searchdropdwn.place(x=155, y=25)
 
 entrylabel = tk.Label(root, text = "Enter Variables")
 entrylabel.config(bg = primeclr, width= 33)
@@ -225,26 +236,13 @@ resultslabel.place(x = 0, y= 290)
 resultsframe = tk.Frame(root)
 resultsframe.config(bd = 1, bg = secondaryclr, height = 40, highlightbackground= borderclr)
 resultsframe.place(x = 0, y = 320)
-'''
-canvas = tk.Canvas(resultsframe, width = 300, height = 50)
-canvas.pack()
-img = tk.PhotoImage(file="quack men square.png")      
-canvas.create_image(20,20, image=img)
 
-return1 = tk.Text(resultsframe)
-return1.config(width = 41, height = 2, bg = secondaryclr, state = "disabled", borderwidth = 1, highlightbackground= borderclr)
-return1.pack()
-
-return2 = tk.Text(resultsframe)
-return2.config(width = 41, height = 2, bg = secondaryclr, state = "disabled", borderwidth = 1, highlightbackground= borderclr)
-return2.pack()
-
-return3 = tk.Text(resultsframe)
-return3.config(width = 41, height = 2, bg = secondaryclr, state = "disabled", borderwidth = 1, highlightbackground= borderclr)
-return3.pack()
-'''
+output = tk.Text(resultsframe)
+output.config(width = 21, height = 1, font = ("Helvetica",24), bg = secondaryclr, state = "disabled", borderwidth = 1, highlightbackground= borderclr)
+output.pack()
 
 
-root.geometry("305x700+100+100")
+
+root.geometry("305x370+100+100")
 root.protocol("WM_DELETE_WINDOW", on_closing)
 root.mainloop()

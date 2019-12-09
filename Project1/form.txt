@@ -1,9 +1,9 @@
-kinematics,1,v,a,t
+kinematics,1,vi,vf,a,t
 kinematics,2,vi,vf,t,x
 kinematics,3,vi,t,a,x
 kinematics,4,vf,t,a,x
 kinematics,5,vf,vi,a,t
 geometry,6,a,b,c
-trig,7,θ,o,h
-trig,8,θ,a,h
-trig,9,θ,o,a
+Trig,7,θ,theta,o,h
+Trig,8,θ,theta,a,h
+Trig,9,θ,theta,o,a
