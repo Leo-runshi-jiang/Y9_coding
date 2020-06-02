@@ -1,1 +1,2 @@
-print("\u03C0")
+while(True):
+	print("Don't touch your nose")
