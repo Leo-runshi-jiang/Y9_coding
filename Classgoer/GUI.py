@@ -8,23 +8,9 @@ from datetime import datetime
 import sys
 import time
 import webbrowser
-import os
 
 frames = []
 widgets = []
-notifiedtimes=[]
-
-def getvalue():
-	onoff=turntolist("state.txt")
-	if "on" in onoff:
-		return 1
-	else:
-		return 0
-def notify():
-        time_string = time.strftime("%H:%M")
-        if time_string not in notifiedtimes:
-	        os.system("""osascript -e 'display notification "Reminder from class Goer" with title "It is time for class"'""")
-	        notifiedtimes.append(time_string)
 '''
 the files txt files used are in a format there it goes
 "object,data associated with object,object2"
@@ -35,6 +21,7 @@ to read/manipulate the file
 '''
 
 #functions used to read/convert/delete files of this format
+
 #turns file into list
 def turntolist(filename):
 	file=open(filename, "r")
@@ -95,7 +82,7 @@ def createclasswidgets(name,number):
 	#reads value of num class
 	#lenclasslist=len(turntolist("ClassLinks.txt"))-1
 	#numclass=lenclasslist/2
-	classlabel = tk.Label(classframe,width=17,font=("Helvetica", 20),text=name)
+	classlabel = tk.Label(classframe,width=15,font=("Helvetica", 20),text=name)
 	classbtn= tk.Button(classframe,width=10,relief="flat",text="Go to class",command=lambda: gotoclass(name))
 	classbtn.config(fg="#4A86E8")
 	widgets.append(classframe)
@@ -116,7 +103,8 @@ def loadclasses():
 	listclass=turntolist("ClassLinks.txt")
 	classnamelist=listclass[::2]
 	for i in range(0,len(classnamelist)-1,1):
-		createclasswidgets(classnamelist[i],i)
+		print(i)
+		createclasswidgets(classnamelist[0],1)
 
 #GUI specific functions
 def getdate():
@@ -127,24 +115,38 @@ def getdate():
 
 def tickingclock():
     time_string = time.strftime("%H:%M")
-    alarmtimes=turntolist("times.txt")
-    state = var.get()
-    statelist=turntolist("state.txt")
-    if state==1:
-    	if "off" in statelist:
-    		rewritefile=open("state.txt", "w")
-    		rewritefile.write("on")
-
-    	if time_string in alarmtimes:
-    		notify()
-    
-    if state==0:
-    	if "on" in statelist:
-    		rewritefile=open("state.txt", "w")
-    		rewritefile.write("off")
-
     clock.config(text=time_string)
     clock.after(1000, tickingclock)
+
+#other windows
+def editwindow():
+    editwindow = tk.Toplevel(root)
+
+    divider3 = tk.Label(editwindow)
+    divider3.config(bg="#4A86E8", height=1)
+    divider3.pack(fill="both")
+
+    divider4 = tk.Label(editwindow, text="Enter in Class name and Link to class", font=("Helvetica", 20))
+    divider4.pack(fill="both")
+
+    divider5 = tk.Label(editwindow)
+    divider5.config(bg="#4A86E8", height=1)
+    divider5.pack(fill="both")
+
+    addorchangeframe=tk.Frame(editwindow, bg="#EDEDED")
+    addorchangeframe.pack()
+
+    classnameentry=tk.Entry(addorchangeframe)
+    classnameentry.grid(column=1,row=0)
+
+    addorchangebtn=tk.Button(addorchangeframe,text="Add or change",command=addorchange)
+    addorchangebtn.grid(column=2,row=0)
+
+    classlinkentry=tk.Entry(addorchangeframe)
+    classlinkentry.grid(column=1,row=2)
+
+
+#def editclass():
 
 def addorchange():
 	newclassname=classnameentry.get()
@@ -153,7 +155,6 @@ def addorchange():
 	print(newclasslink)
 	listclass=turntolist("ClassLinks.txt")
 	classnamelist=listclass[::2]
-	print("hi")
 	if newclassname in classnamelist:
 		delclassindex=classnamelist.index(newclassname)*2
 		listclass.pop(delclassindex)
@@ -171,6 +172,7 @@ def addorchange():
 		appendclassfile.write(newclassname+","+newclasslink+",")
 		print("class added")
 
+	loadclasses()
 
 
 
@@ -183,8 +185,7 @@ def addclass(newclassname,newclasslink):
 		appendclassfile.write(newclassname+","+newclasslink+",")
 		print("class added")
 
-def deleteclass():
-	delclassname=classnameentry.get()
+def deleteclass(delclassname):
 	#go to class names, search for name to delete, delete it and the link after it
 	listclass=turntolist("ClassLinks.txt")
 	classnamelist=listclass[::2]
@@ -196,33 +197,24 @@ def deleteclass():
 	rewritefile=open("ClassLinks.txt", "w")
 	for i in range(0,len(listclass)-1,1):
 		rewritefile.write(listclass[i]+",")
-	print(delclassname+" deleted")
 
-def addtime():
-	listtime=turntolist("times.txt")
-	newtime=timeentry.get()
-	if newtime in listtime and var==1:
-		print("class already added")
-	else:
-		appendclassfile=open("times.txt", "a")
-		appendclassfile.write(newtime+",")
-		print("time added")
 
-def deletetime():
-	listtime=turntolist("times.txt")
-	newtime=timeentry.get()
-	deltimeindex=listtime.index(newtime)
-	listtime.pop(delclassindex)
-	print("time deleted")
+def editclassframe():
+	#DESTROYS original frame, create new one and loads all again
+	classframe.destroy()
+	classframe = tk.Frame(parentframe, borderwidth=2, relief="groove")
+	frames.append(classframe)
+	classframe.pack()
+	loadclasses()
+
 
 root = tk.Tk()
-root.title("Class Goer")
-var = tk.IntVar(value=getvalue())
+root.config(bg="#EDEDED")
 
 clockiconpng = tk.PhotoImage(file="Images/clockicon.png")
 peniconpng = tk.PhotoImage(file="Images/editpenicon.png")
 schedule=tk.PhotoImage(file="Images/schedule.png")
-topframe = tk.Frame(root, bg="#EDEDED")
+topframe = tk.Frame(root)
 topframe.pack()
 
 date = tk.Label(topframe, text = getdate(), font=("Helvetica", 50))
@@ -230,17 +222,24 @@ date.config(fg="white", bg="#4A86E8",anchor="w",width=15, padx=20)
 date.grid(row=0, column=0)
 
 clockicon = tk.Label(topframe,image=clockiconpng)
-clockicon.config(bg="#EDEDED")
+clockicon.config(bg="white")
 clockicon.grid(row=0, column=1)
 
 clock = tk.Label(topframe,font=("Helvetica", 50))
-clock.config(fg="black", bg="#EDEDED", anchor="w")
+clock.config(fg="black", bg="white", anchor="w")
 clock.grid(row=0, column=2)
 tickingclock()
 
+editclassbtn =tk.Button(root, text="Edit classes", image= peniconpng,compound="left",command=editwindow, font=("Helvetica", 14))
+editclassbtn.config(width=15)
+editclassbtn.pack(anchor="w",padx=20)
+
+divider1 = tk.Label(root)
+divider1.config(bg="#4A86E8", height=1)
+divider1.pack(fill="both")
+
 parentframe=tk.Frame(root)
 parentframe.pack()
-
 classframe = tk.Frame(parentframe, borderwidth=2, relief="groove")
 frames.append(classframe)
 
@@ -253,56 +252,5 @@ divider2.pack(fill="both")
 scheduleimg=tk.Label(root, image=schedule, width=650)
 scheduleimg.pack()
 
-divider5 = tk.Label(root)
-divider5.config(bg="#4A86E8", height=1)
-divider5.pack(fill="both")
-
-editwindow=tk.Frame(root)
-editwindow.pack()
-
-
-divider4 = tk.Label(editwindow, text="Enter in Class name and Link to class", font=("Helvetica", 20))
-divider4.pack(fill="both")
-
-addorchangeframe=tk.Frame(editwindow)
-addorchangeframe.pack()
-
-classnameentry=tk.Entry(addorchangeframe)
-classnameentry.grid(column=1,row=0)
-
-addorchangebtn=tk.Button(addorchangeframe,text="Add or change",command=addorchange)
-addorchangebtn.grid(column=2,row=0)
-
-classlinkentry=tk.Entry(addorchangeframe)
-classlinkentry.grid(column=1,row=1)
-
-deletebtn=tk.Button(addorchangeframe,text="Delete",command=deleteclass)
-deletebtn.grid(column=2,row=1)
-
-divider7 = tk.Label(root)
-divider7.config(bg="#4A86E8", height=1)
-divider7.pack(fill="both")
-
-divider6 = tk.Label(editwindow, text="Edit alarm times", font=("Helvetica", 20))
-divider6.pack(fill="both")
-
-timeframe=tk.Frame(editwindow)
-timeframe.pack()
-
-timeentry=tk.Entry(timeframe)
-timeentry.config(width=20)
-timeentry.grid(row=0,column=0)
-
-alarmcheck= tk.Checkbutton(timeframe, text="notifications", variable=var)
-alarmcheck.grid(row=1,column=0)
-
-
-addtimebtn=tk.Button(timeframe,text="add", command=addtime)
-addtimebtn.grid(row=0,column=1)
-
-deletetimebtn=tk.Button(timeframe,text="Delete",command=deletetime)
-deletetimebtn.grid(row=0,column=2)
-
 loadclasses()
 root.mainloop()
-
