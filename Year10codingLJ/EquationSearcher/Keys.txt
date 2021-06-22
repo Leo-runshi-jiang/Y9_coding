@@ -1,0 +1,4 @@
+{"All":[["vf=vi+at","vf","vi","a","t"],["d=1/2(vf+vi)t","d","vf","vi","t"],["d=vi*t+1/2at^2","d","vi","a","t"]]}
+{"Math":{"All":[],Algebra":[],"Geotrig":[]}
+{"Physics":{"All":[],"Kinematics":[["vf=vi+at","vf","vi","a","t"],["d=1/2(vf+vi)t","d","vf","vi","t"],["d=vi*t+1/2at^2","d","vi","a","t"]],"Mechanics":[]}
+{"Chem":{"All":[],}}

@@ -1,0 +1,39 @@
+input numerator
+input denominator
+
+function getWholeNumAndFraction()
+	wholenum = numerator%denominator
+	return([wholenum,numerator-wholenum*denominator,denominator])
+end
+
+function findGCF(numerator,denominator)
+	while result = False
+		if numerator > denominator
+			numerator = numerator-denominator
+		end
+
+		if numerator < denominator:
+			denominator = denominator-numerator
+		end
+
+		if numerator = denominator:
+			result = True
+			return numerator
+		end
+	end
+end
+
+function simplifyFraction(numerator,denominator)
+	GCF = findGCF(numerator,denominator)
+	return([numerator/GCF,denominator/GCF])
+end
+
+function getAnswer()
+	new_numerator = simplifyFraction(getWholeNumAndFraction()[1],getWholeNumAndFraction()[2])[0]
+	new_denominator = simplifyFraction(getWholeNumAndFraction()[1],getWholeNumAndFraction()[2])[1]
+
+	return(str(getWholeNumAndFraction()[0])+str(new_numerator)+str(new_denominator))
+end
+
+getAnswer()
+	
